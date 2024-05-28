@@ -34,7 +34,7 @@ const AllChampions = () => {
             </ul>
         </div>
     );
-}
+} 
 
 // Рендер компонента AllChampions в корневой элемент
 root.render(<AllChampions />);
