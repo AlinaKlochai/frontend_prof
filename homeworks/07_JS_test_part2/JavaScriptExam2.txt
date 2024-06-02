@@ -1,0 +1,388 @@
+1. What's the output?
+function sayHi() {
+  console.log(name);
+  console.log(age);
+  var name = "Lydia";
+  let age = 21;
+}
+
+sayHi();
+A: Lydia and undefined
+B: Lydia and ReferenceError
+C: ReferenceError and 21
+D: undefined and ReferenceError    !
+
+При вызове функции sayHi происходят следующие шаги:
+
+Подъём переменных (hoisting):
+В JavaScript объявления переменных поднимаются наверх их области видимости.
+Переменные, объявленные с помощью var, поднимаются и инициализируются значением undefined.
+Переменные, объявленные с помощью let (и const), также поднимаются, но не инициализируются. Они остаются в "временной мёртвой зоне" (temporal dead zone) от начала блока до момента их объявления.
+После подъёма переменных функция выглядит так:
+function sayHi() {
+  var name;
+  let age; // объявления с помощью `let` поднимаются, но не инициализируются
+  
+  console.log(name); // undefined, потому что `name` поднята и инициализирована значением `undefined`
+  console.log(age);  // ReferenceError, потому что `age` находится в временной мёртвой зоне
+  
+  name = "Lydia";
+  age = 21;
+}
+
+Выполнение функции:
+console.log(name); выполняется. Так как name объявлена с помощью var и инициализирована значением undefined, выводится undefined.
+console.log(age); выполняется. В этот момент age находится в временной мёртвой зоне, поэтому при попытке доступа к ней возникает ошибка ReferenceError.
+============================================================================================================================================================================================================
+
+2. What's the output?
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 1);
+}
+
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 1);
+}
+A: 0 1 2 and 0 1 2
+B: 0 1 2 and 3 3 3
+C: 3 3 3 and 0 1 2                                !
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 1);
+}
+Подъём переменной i: Переменная i, объявленная с помощью var, поднимается и существует в глобальной области видимости.
+Асинхронное выполнение: Функция setTimeout является асинхронной и выполняется после завершения текущего стека выполнения. К моменту, когда setTimeout выполнится, цикл уже завершит своё выполнение, и значение i будет равно 3.
+Вывод в консоль: Так как все три вызова console.log(i) будут выполнены после завершения цикла, в каждом из них значение i будет равно 3.
+Таким образом, для первого цикла результат будет:
+3
+3
+3
+
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 1);
+}
+Блочная область видимости: Переменная i, объявленная с помощью let, имеет блочную область видимости. Это значит, что для каждого итерационного блока создаётся новая независимая переменная i.
+Асинхронное выполнение: Функция setTimeout в каждой итерации захватывает текущее значение переменной i для этого блока.
+Вывод в консоль: В каждом из вызовов console.log(i) будет выводиться значение i, соответствующее моменту создания функции setTimeout.
+Таким образом, для второго цикла результат будет:
+0
+1
+2
+============================================================================================================================================================================================================
+
+3.What's the output?
++true;
+!"Lydia";
+A: 1 and false              !
+B: false and NaN
+C: false and false
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Первая строка: +true
+Оператор + перед значением используется для приведения его к числу.
+
+В JavaScript true приводится к числу 1.
+Таким образом, +true становится просто 1.
+
+Вторая строка: !"Lydia"
+Оператор ! используется для приведения значения к булевому типу и последующего его инвертирования.
+
+Любая непустая строка в JavaScript приводится к true.
+В данном случае "Lydia" приводится к true.
+Оператор ! инвертирует true в false.
+============================================================================================================================================================================================================
+
+4. What's the output?
+const shape = {
+  radius: 10,
+  diameter() {
+    return this.radius * 2;
+  },
+  perimeter: () => 2 * Math.PI * this.radius
+};
+
+console.log(shape.diameter());
+console.log(shape.perimeter());
+A: 20 and 62.83185307179586
+B: 20 and NaN                            !
+C: 20 and 63
+D: NaN and 63
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Свойство radius
+radius: 10 просто устанавливает значение радиуса равным 10.
+Метод diameter
+diameter() { return this.radius * 2; } — это обычный метод объекта. Он использует this для доступа к свойству radius объекта shape.
+Внутри метода diameter, this указывает на объект shape, поэтому this.radius будет равно 10.
+Таким образом, shape.diameter() возвращает 10 * 2 = 20.
+Стрелочная функция perimeter
+perimeter: () => 2 * Math.PI * this.radius — это стрелочная функция.
+Стрелочные функции не имеют собственного значения this. Вместо этого они используют значение this из внешнего контекста, в котором были созданы. В данном случае внешним контекстом является глобальный объект (или модуль, в зависимости от среды исполнения).
+Если этот код выполняется в строгом режиме или в модуле, this в стрелочной функции будет undefined, и попытка доступа к this.radius приведёт к ошибке TypeError.
+Если не в строгом режиме, this в глобальной области будет указывать на глобальный объект (например, window в браузере), где this.radius будет undefined, так как глобальный объект не имеет свойства radius.
+
+console.log(shape.diameter());  // 20
+console.log(shape.perimeter()); // NaN
+shape.diameter() возвращает 20, так как метод diameter использует правильный контекст this, указывающий на объект shape.
+shape.perimeter() возвращает NaN, потому что стрелочная функция не имеет собственного контекста this, и this.radius будет undefined. В результате выражение 2 * Math.PI * undefined даст NaN.
+============================================================================================================================================================================================================
+5.Which one is true?
+const bird = {
+  size: "small"
+};
+
+const mouse = {
+  name: "Mickey",
+  small: true
+};
+A: mouse.bird.size is not valid
+B: mouse[bird.size] is not valid
+C: mouse[bird["size"]] is not valid           !
+D: All of them are valid
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mouse[bird.size] === true:
+
+bird.size возвращает строку "small".
+mouse["small"] существует и равен true, так что mouse[bird.size] действительно равно true.
+============================================================================================================================================================================================================
+
+6. What's the output?
+let c = { greeting: "Hey!" };
+let d;
+
+d = c;
+c.greeting = "Hello";
+console.log(d.greeting);
+A: Hello
+B: Hey!
+C: undefined
+D: ReferenceError
+E: TypeError
+
+What's the output?
+let a = 3;
+let b = new Number(3);
+let c = 3;
+
+console.log(a == b);
+console.log(a === b);
+console.log(b === c);
+A: true false true
+B: false false true
+C: true false false
+D: false true true
+What happens when we do this?
+function bark() {
+  console.log("Woof!");
+}
+
+bark.animal = "dog";
+A: Nothing, this is totally fine!
+B: SyntaxError. You cannot add properties to a function this way.
+C: "Woof" gets logged.
+D: ReferenceError
+What's the output?
+function Person(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+}
+
+const lydia = new Person("Lydia", "Hallie");
+const sarah = Person("Sarah", "Smith");
+
+console.log(lydia);
+console.log(sarah);
+A: Person {firstName: "Lydia", lastName: "Hallie"} and undefined
+B: Person {firstName: "Lydia", lastName: "Hallie"} and Person {firstName: "Sarah", lastName: "Smith"}
+C: Person {firstName: "Lydia", lastName: "Hallie"} and {}
+D:Person {firstName: "Lydia", lastName: "Hallie"} and ReferenceError
+
+What's the output?
+function sum(a, b) {
+  return a + b;
+}
+
+sum(1, "2");
+A: NaN
+B: TypeError
+C: "12"
+D: 3
+ What's the output?
+let number = 0;
+console.log(number++);
+console.log(++number);
+console.log(number);
+A: 1 1 2
+B: 1 2 2
+C: 0 2 2
+D: 0 1 2
+What's the output?
+function checkAge(data) {
+  if (data === { age: 18 }) {
+    console.log("You are an adult!");
+  } else if (data == { age: 18 }) {
+    console.log("You are still an adult.");
+  } else {
+    console.log(`Hmm.. You don't have an age I guess`);
+  }
+}
+
+checkAge({ age: 18 });
+A: You are an adult!
+B: You are still an adult.
+C: Hmm.. You don't have an age I guess
+
+What's the output?
+function getAge(...args) {
+  console.log(typeof args);
+}
+
+getAge(21);
+A: "number"
+B: "array"
+C: "object"
+D: "NaN"
+What's the output?
+function getAge() {
+  "use strict";
+  age = 21;
+  console.log(age);
+}
+
+getAge();
+A: 21
+B: undefined
+C: ReferenceError
+D: TypeError
+What's value of sum?
+const sum = eval("10*10+5");
+A: 105
+B: "105"
+C: TypeError
+D: "10*10+5"
+What's the output?
+var num = 8;
+var num = 10;
+
+console.log(num);
+A: 8
+B: 10
+C: SyntaxError
+D: ReferenceError
+What's the output?
+const obj = { a: "one", b: "two", a: "three" };
+console.log(obj);
+A: { a: "one", b: "two" }
+B: { b: "two", a: "three" }
+C: { a: "three", b: "two" }
+D: SyntaxError
+What's the output?
+const foo = () => console.log("First");
+const bar = () => setTimeout(() => console.log("Second"));
+const baz = () => console.log("Third");
+
+bar();
+foo();
+baz();
+A: First Second Third
+B: First Third Second
+C: Second First Third
+D: Second Third First
+What's the output?
+const foo = () => console.log("First");
+const bar = () => setTimeout(() => console.log("Second"));
+const baz = () => console.log("Third");
+
+bar();
+foo();
+baz();
+A: First Second Third
+B: First Third Second
+C: Second First Third
+D: Second Third First
+
+What is the event.target when clicking the button?
+<div onclick="console.log('first div')">
+  <div onclick="console.log('second div')">
+    <button onclick="console.log('button')">
+      Click!
+    </button>
+  </div>
+</div>
+A: Outer div
+B: Inner div
+C: button
+D: An array of all nested elements.
+When you click the paragraph, what's the logged output?
+<div onclick="console.log('div')">
+  <p onclick="console.log('p')">
+    Click here!
+  </p>
+</div>
+A: p div
+B: div p
+C: p
+D: div
+What's the output?
+const person = { name: "Lydia" };
+
+function sayHi(age) {
+  return `${this.name} is ${age}`;
+}
+
+console.log(sayHi.call(person, 21));
+console.log(sayHi.bind(person, 21));
+A: undefined is 21 Lydia is 21
+B: function function
+C: Lydia is 21 Lydia is 21
+D: Lydia is 21 function
+
+
+What's the output?
+function sayHi() {
+  return (() => 0)();
+}
+
+console.log(typeof sayHi());
+A: "object"
+B: "number"
+C: "function"
+D: "undefined"
+Which of these values are falsy?
+0;
+new Number(0);
+("");
+(" ");
+new Boolean(false);
+undefined;
+A: 0, '', undefined
+B: 0, new Number(0), '', new Boolean(false), undefined
+C: 0, '', new Boolean(false), undefined
+D: All of them are falsy
+What's the output?
+(() => {
+  let x, y;
+  try {
+    throw new Error();
+  } catch (x) {
+    (x = 1), (y = 2);
+    console.log(x);
+  }
+  console.log(x);
+  console.log(y);
+})();
+A: 1 undefined 2
+B: undefined undefined undefined
+C: 1 1 2
+D: 1 undefined undefined
+
+What's the output?
+[[0, 1], [2, 3]].reduce(
+  (acc, cur) => {
+    return acc.concat(cur);
+  },
+  [1, 2]
+);
+A: [0, 1, 2, 3, 1, 2]
+B: [6, 1, 2]
+C: [1, 2, 0, 1, 2, 3]
+D: [1, 2, 6]
