@@ -2,25 +2,27 @@ import { Component } from 'react';
 
 export class User extends Component {
     render() {
+        //проверка получили ли props
+        //console.log(this.props);
         //eslint-disable-next-line react/prop-types
-        const { user } = this.props;
+        const { name, email, phone, address: { city }, company:{ name: companyName}  } = this.props.person;
 
-         if (!user) {
-            return <div>No user data</div>;
-        }
+        //  if (!person) {
+        //     return <div>No user data</div>;
+        // }
 
         
         return (
             <div className='border border-primary-subtle w-50 my-2 p-2 task-container'>
                {/* eslint-disable-next-line react/prop-types */} 
-                <h2>{user.name}</h2>
+                <h2>{name}</h2>
                 {/* eslint-disable-next-line react/prop-types */} 
-                <p>Email: {user.email}</p>
+                <p>Email: {email}</p>
                 {/* eslint-disable-next-line react/prop-types */} 
-                <p>Phone: {user.phone}</p>
+                <p>Phone: {phone}</p>
                 {/* eslint-disable-next-line react/prop-types */} 
-                <p>Company: {user.company.name}</p>
-
+                <p>City: {city}</p>
+                <p>Company: {companyName}</p>
             </div>
         );
     }

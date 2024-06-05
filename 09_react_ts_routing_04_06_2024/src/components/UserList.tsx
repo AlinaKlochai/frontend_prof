@@ -1,10 +1,27 @@
 import { Component } from 'react'
 import User from './User';
 
+export interface IUserJson {
+    id: number;
+    name: string;
+    email: string;
+    address: {
+        city: string;
+    },
+    phone: string;
+    company: {
+        name: string;
+    }
+}
+
+interface IUserListState {
+    users: IUserJson[],
+    isLoading: boolean
+}
 
 // rce-r-react c-component e-export аббревиатура для создание этого шаблона
-export class UserList extends Component {
-    constructor(props) {
+export class UserList extends Component<Record<string, never>, IUserListState> {
+    constructor(props: Record<string, never> ) {
         super(props);
         this.state = {
             users: [],
@@ -33,16 +50,16 @@ export class UserList extends Component {
         if (isLoading) {
             return (
                 //отображения спинера
-                <div className="spinner-border text-primary" role="status">    
+                <div className="spinner-border text-primary" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </div>
             );
         }
 
-        
+
         return (
             <div className='text-center d-flex flex-column align-items-center'>
-                 <h1 className='text-center'>Users:</h1>
+                <h1 className='text-center'>Users:</h1>
                 {users.map(user => (
                     <User key={user.id} person={user} />
                 ))}
