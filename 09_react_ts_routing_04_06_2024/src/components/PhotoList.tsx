@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import Photo from "./Photo";
 
 interface IPhotoJSON {
-    id: number,
-    title: string,
-    url: string,
+    id: number;
+    title: string;
+    thumbnailUrl: string;
+    url: string;
 }
 
 const PhotoList = () => {
     const [photos, setPhotos] = useState<IPhotoJSON[]>([]);
-    //const [loading, setLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/photos')
@@ -17,41 +18,40 @@ const PhotoList = () => {
             .then(response => response.map((photo: IPhotoJSON) => ({
                 id: photo.id,
                 title: photo.title,
-                url: photo.url,
+                url: photo.thumbnailUrl,
             })))
             .then(response => {
-                setPhotos(response.slice(0, 10));
-                // setLoading(false)
+                setPhotos(response.slice(0, 20));
+                setIsLoading(false);
             })
             .catch(error => {
                 console.log(error);
-                // setLoading(false);
+                setIsLoading(false);
             });
 
         return () => console.log('Компонент размонтирован');
     }, []);
 
-
-    // if (loading) {
-    //     return (
-    //         //отображения спинера
-    //         <div className="spinner-border text-primary" role="status">
-    //             <span className="visually-hidden">Loading...</span>
-    //         </div>
-    //     );
-    // }
-
-    if (photos.length === 0) {
-        return <div className="spinner-border text-primary" role="status">
-               <span className="visually-hidden">Loading...</span>
-             </div>
+    if (isLoading) {
+        return (
+            <div className="d-flex flex-column align-items-center">
+                {Array.from(new Array(20)).map((_, index) => (
+                    <div key={index} className="card m-2" style={{ width: "18rem" }}>
+                        <div className="card-img-top bg-secondary" style={{ height: "150px" }}></div>
+                        <div className="card-body">
+                            <h5 className="card-title placeholder-glow">
+                                <span className="placeholder col-6"></span>
+                            </h5>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
     }
-
 
     return (
         <>
             <h1 className='text-center'>Photos:</h1>
-            <div style={{ margin: '0 auto' }} className='w-50 d-flex'></div>
             <div className='text-center d-flex flex-column align-items-center'>
                 {photos.map((photo) => (
                     <Photo
