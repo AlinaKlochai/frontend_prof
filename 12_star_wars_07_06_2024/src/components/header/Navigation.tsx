@@ -1,11 +1,9 @@
+import { FC } from 'react';
 import { navItems } from '../../utils/constants';
 import NavItem from './NavItem';
 
 
-
-
-
-const Navigation = ( ) => {
+const Navigation: FC  = ( ) => {
   return (
     <nav>
         <ul>

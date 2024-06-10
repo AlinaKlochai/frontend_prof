@@ -1,23 +1,30 @@
-import DreamTeam from "./DreamTeam"
-import FarGalaxy from "./FarGalaxy"
-import Hero from "./Hero"
+import React, { FC, useContext } from "react";
+import { IPageContext, PageContext } from "../../App";
+import { navItems } from "../../utils/constants";
+import Home from "./Home";
+import AboutMe from "./AboutMe";
+import StarWars from "./StarWars";
+import Contact from "./Contact";
 
 
-function Main() {
-  return (
-     <>
-      <main>
-        <section className="left">
-          <Hero />
-        </section>
-        <section className="right">
-          <h2>Dream Team</h2>
-          <DreamTeam />
-        </section>
-        <FarGalaxy />
-      </main>
-    </>
-  )
+const Main: FC = () => {
+  const { page } = useContext(PageContext) as IPageContext
+
+  switch (page) {
+    case navItems[0]:
+      return <Home />;
+
+    case navItems[1]:
+      return <AboutMe />;
+
+    case navItems[2]:
+      return <StarWars />;
+
+    case navItems[3]:
+      return <Contact />;
+    default:
+      break;
+  }
 }
 
-export default Main
+export default Main;

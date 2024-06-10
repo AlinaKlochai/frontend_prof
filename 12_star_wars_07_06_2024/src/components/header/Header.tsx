@@ -1,7 +1,8 @@
+import { FC } from "react";
 import Navigation from "./Navigation";
 
 
-const Header = () => {
+const Header: FC = ( ) => {
   return (
     <header>
        <Navigation />
