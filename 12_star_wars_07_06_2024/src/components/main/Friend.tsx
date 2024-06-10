@@ -1,24 +1,28 @@
-import React from 'react'
+import { FC } from 'react'
 
-interface IFriendProps {
-    friend: string;
+const Friend: FC<{ photo: string, num: number }> = ({ photo, num }) => {
+  // if (num == 7) {
+  //   return (
+  //     <img className='bottomLeft' src={photo} alt={`friend${num}`} />
+  //   )
+  // }
+
+  // if (num == 9) {
+  //   return (
+  //     <img className='bottomRight' src={photo} alt={`friend${num}`} />
+  //   )
+
+  // }
+
+  let namesOfClass = '';
+  if (num == 7) {
+    namesOfClass = 'bottomLeft';
   }
 
-const Friend: React.FC<IFriendProps> = ({friend}) => {
-
-    const getClassName = (friend: string) => {
-        if (friend.includes('friend7')) {
-          return "bottomLeft";
-        }
-        if (friend.includes('friend9')) {
-          return "bottomRight";
-        }
-        return '';
-      };
-    
-      return (
-        <img src={friend} alt={friend} className={getClassName(friend)} />
-      );
-    }
+  if (num == 9) {
+    namesOfClass = 'bottomRight';
+  }
+  return <img className={namesOfClass} src={photo} alt={`friend${num}`} />
+};
 
 export default Friend
