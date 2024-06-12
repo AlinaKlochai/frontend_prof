@@ -16,6 +16,7 @@ const Sandwich = () => {
   
     return (
         <div>
+          <h2>Choose your sandwich:</h2>
           <div>Sandwich: {ingredients.join(', ')}</div>
           <button onClick={() => addIngredient('bread')}>Add bread</button>
           <button onClick={() => addIngredient('sausage')}>Add sausage</button>

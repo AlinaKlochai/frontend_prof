@@ -1,4 +1,4 @@
-import SandwichAction from './sandwichActions';
+import SandwichAction from './sandwichAction';
 
 const initialState = {
   ingredients: [] as string[]
