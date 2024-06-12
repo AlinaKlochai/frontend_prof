@@ -1,20 +1,35 @@
+import React, { createContext, useState } from 'react';
+import './App.css';
+import Header from './components/header/Header';
+import { navItems } from './utils/constants';
+import Main from './components/Main';
 
-import './App.css'
-import Counter from './components/Counter'
-import Sandwich from './components/Sandwich'
+export interface IPageContext  {
+  page: string, 
+  setPage: (newValue: string) => void
+}
+
+//1. Срздание контекста
+export const PageContext = createContext< IPageContext | null >(null)
 
 
+const App: React.FC = () => {
+  const [page, setPage] = useState(navItems[0]);
 
-function App() {
+
+  console.log(page);
 
 
   return (
-    <div>
-      < Counter />
-      <Sandwich />
+    <div className="App">
+
+      {/* 2. Передача контекстом */}
+      <PageContext.Provider value={{ page, setPage}}>
+        <Header />
+        <Main />
+      </PageContext.Provider>
     </div>
+  );
+};
 
-  )
-}
-
-export default App
+export default App;

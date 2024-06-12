@@ -1,6 +1,7 @@
 import { combineReducers, legacy_createStore } from "redux";
 import counterReducer from "./counterReducer";
 import sandwichReducer from "./sandwichReducer";
+import libraryReducer from "./libraryReducer";
 
 // const rooReducer = combineReducers({
 //     counter: counterReducer,
@@ -13,7 +14,8 @@ import sandwichReducer from "./sandwichReducer";
 
 const store = legacy_createStore(combineReducers({
     counter: counterReducer,
-    sandwich: sandwichReducer    //добавдения нового reducer в storage
+    sandwich: sandwichReducer,   //добавдения нового reducer в storage
+    library: libraryReducer
 }))
 
 export default store;

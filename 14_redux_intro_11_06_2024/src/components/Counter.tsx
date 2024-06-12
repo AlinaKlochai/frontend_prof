@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 
@@ -14,7 +13,7 @@ const handlePlus = () =>{
     dispatch( { type: 'counter/plus', payload: 1})
 }
   return (
-    <div>
+    <div className='counterDiv'>
         <div>Counter: {counter} </div>
         <button onClick={handleMinus}>Minus (Decrement)</button>
         <button onClick={handlePlus}>Plus (Increment)</button>
