@@ -1,41 +1,51 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FormEvent, useState } from 'react';
+import {  useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { Book } from '../redux/libraryAction';
-
+import Book from './Book';
 
 const Library = () => {
-    const books = useSelector((state: RootState) => state.library.books);
-    const dispatch = useDispatch();
-    const [newBook, setNewBook] = useState<Book>({ title: '', year: 0, author: '' });
-    const [editBook, setEditBook] = useState<Book>({ isbn: '', title: '', year: 0, author: '' });
+     const[title, setTitle] = useState<string>('');
+     const[author, setAuthor] = useState<string>('');
+     const[year, setYear] = useState<number>(0);
 
-    const addBookToLibrary = () => {
-        dispatch({ type: 'library/add', payload: newBook });
-        setNewBook({ title: '', year: 0, author: '' });
-    };
+     const books = useSelector((state: RootState) => state.library.books);
+     const dispatch = useDispatch();
 
-    const editBookInLibrary = () => {
-        dispatch({ type: 'library/edit', payload: editBook });
-        setEditBook({ isbn: '', title: '', year: 0, author: '' });
-    };
 
-    const deleteBookFromLibrary = (isbn: string) => {
-        dispatch({ type: 'library/delete', payload: isbn });
-    };
+     const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        dispatch({ type: 'library/add', payload: { title, author, year } });
+        setTitle('');
+        setAuthor('');
+        setYear(0);
+     };
 
     return (
         <div className='libraryDiv'>
-            <h2>Our library:</h2>
+
+            <h2>Add Book</h2>
+            <form onSubmit={handleSubmit}>
+                <label>Title:
+                 <input type='text'placeholder='Title' value={title} onChange={( e => setTitle(e.target.value))}/>   
+                </label>
+                <label>Author:
+                  <input type='text' placeholder='Author' value={author} onChange={(e => setAuthor(e.target.value))}/>   
+                </label>
+               <label>Year:
+                 <input type='text'placeholder='Year' value={year} onChange={(e => setYear(+e.target.value))} />    
+               </label>
+               
+                <button>Add Book</button>
+            </form>
+
+            <h2>Book List:</h2>
             <ul>
                 {books.map(book => (
-                    <li key={book.isbn}>
-                        ISBN: {book.isbn} , {book.title} by {book.author} ({book.year})
-                        <button onClick={() => deleteBookFromLibrary(book.isbn || '')}>Delete</button>
-                    </li>
+                    <Book key ={book.isbn} info={book} />
+
                 ))}
             </ul>
-            <div>
+            {/* <div>
                 <h3>Add a new book:</h3>
                 <input
                     type="text"
@@ -84,7 +94,7 @@ const Library = () => {
                     onChange={(e) => setEditBook({ ...editBook, author: e.target.value })}
                 />
                 <button onClick={editBookInLibrary}>Edit information about book</button>
-            </div>
+            </div> */}
         </div>
     );
 };

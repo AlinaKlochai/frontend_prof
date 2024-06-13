@@ -5,13 +5,13 @@
 */
 
 export type Book = {
-    isbn?: string // (unique)
+    isbn: string // (unique)
     title: string
     year: number
     author: string
 };
 
 export type libraryAction =
-    | { type: 'library/add', payload: Book }
+    | { type: 'library/add', payload: Omit<Book, 'isbh'> }
     | { type: 'library/edit', payload: Book }
     | { type: 'library/delete', payload: string }

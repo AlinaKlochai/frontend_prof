@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 
+
 const Counter = () => {
 const counter = useSelector((state: RootState) => state.counter.value)
 const dispatch = useDispatch();
 
 const handleMinus = () =>{
-    dispatch( { type: 'counter/minus', payload: 1})
+  dispatch( { type: 'counter/minus', payload: 1})
 }
 
 const handlePlus = () =>{
