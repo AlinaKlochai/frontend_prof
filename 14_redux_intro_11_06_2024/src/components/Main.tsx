@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { FC, useContext } from "react";
-=======
-import { FC, useContext, useEffect, useState } from "react";
->>>>>>> 84d47a83339b5cb5390191dd5e7974a25f06cbc5
 import Counter from "./Counter";
 import Library from "./Library";
 import Sandwich from "./Sandwich";
@@ -11,7 +7,6 @@ import { IPageContext, PageContext } from "../App";
 
 const Main: FC = () => {
     const { page } = useContext(PageContext) as IPageContext;
-<<<<<<< HEAD
 
     let backgroundClass = '';
     switch (page) {
@@ -28,29 +23,6 @@ const Main: FC = () => {
             backgroundClass = 'white';
             break;
     }
-=======
-    const [backgroundClass, setBackgroundClass] = useState<string>('');
-
-    useEffect(() => {
-        switch (page) {
-            case navItems[0]:
-                setBackgroundClass('counter-bg');
-                break;
-
-            case navItems[1]:
-                setBackgroundClass('sandwich-bg');
-                break;
-
-            case navItems[2]:
-                setBackgroundClass('library-bg');
-                break;
-
-            default:
-                setBackgroundClass('white');
-                break;
-        }
-    }, [page]);
->>>>>>> 84d47a83339b5cb5390191dd5e7974a25f06cbc5
 
     return (
         <div className={backgroundClass}> {/* Здесь применяем класс CSS */}
@@ -62,7 +34,3 @@ const Main: FC = () => {
 };
 
 export default Main;
-<<<<<<< HEAD
-
-=======
->>>>>>> 84d47a83339b5cb5390191dd5e7974a25f06cbc5
