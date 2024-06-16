@@ -1,7 +1,9 @@
 import { FormEvent, useState } from 'react';
 import {  useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+
 import Book from './Book';
+import { addBook } from '../redux_rtk/librarySlice';
+import { RootState } from '../redux_rtk/storeRTK';
 
 const Library = () => {
      const[title, setTitle] = useState<string>('');
@@ -14,7 +16,7 @@ const Library = () => {
 
      const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        dispatch({ type: 'library/add', payload: { title, author, year } });
+        dispatch( addBook({ title, author, year })  );
         setTitle('');
         setAuthor('');
         setYear(0);

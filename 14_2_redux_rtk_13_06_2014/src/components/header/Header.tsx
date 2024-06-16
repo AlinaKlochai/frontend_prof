@@ -1,10 +1,17 @@
-import { FC } from "react";
-import Navigation from "./Navigation";
+import React from 'react';
+import { navItems } from "../../utils/constants";
+import { Link } from "react-router-dom";
 
-const Header: FC = ( ) => {
+const Header: React.FC = ( ) => {
   return (
     <header>
-       <Navigation />
+       {navItems.map(item => (
+        <Link key={item} to={`/${item.toLowerCase()}`}>
+          <button className='navBtn'>
+            {item}
+          </button>
+        </Link>
+      ))}
     </header>
   );
 };

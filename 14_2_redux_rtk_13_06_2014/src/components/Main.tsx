@@ -1,36 +1,38 @@
-import { FC, useContext } from "react";
+
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Counter from "./Counter";
 import Library from "./Library";
 import Sandwich from "./Sandwich";
-import { navItems } from "../utils/constants";
-import { IPageContext, PageContext } from "../App";
 
-const Main: FC = () => {
-    const { page } = useContext(PageContext) as IPageContext;
-
+const Main: React.FC = () => {
+    const location = useLocation();
+  
     let backgroundClass = '';
-    switch (page) {
-        case navItems[0]:
-            backgroundClass = 'counter-bg';
-            break;
-        case navItems[1]:
-            backgroundClass = 'sandwich-bg';
-            break;
-        case navItems[2]:
-            backgroundClass = 'library-bg';
-            break;
-        default:
-            backgroundClass = 'white';
-            break;
+    switch (location.pathname) {
+      case '/counter':
+        backgroundClass = 'counter-bg';
+        break;
+      case '/sandwich':
+        backgroundClass = 'sandwich-bg';
+        break;
+      case '/library':
+        backgroundClass = 'library-bg';
+        break;
+      default:
+        backgroundClass = 'white';
+        break;
     }
-
+  
     return (
-        <div className={backgroundClass}> {/* Здесь применяем класс CSS */}
-            {page === navItems[0] && <Counter />}
-            {page === navItems[1] && <Sandwich />}
-            {page === navItems[2] && <Library />}
-        </div>
+      <div className={`Main ${backgroundClass}`}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/counter" />} />
+          <Route path="/counter" element={<Counter />} />
+          <Route path="/sandwich" element={<Sandwich />} />
+          <Route path="/library" element={<Library />} />
+        </Routes>
+      </div>
     );
-};
+  };
 
 export default Main;
