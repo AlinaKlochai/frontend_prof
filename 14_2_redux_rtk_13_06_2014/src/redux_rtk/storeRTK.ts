@@ -12,4 +12,4 @@ export const storeRTK = configureStore({
 });
 
 export type RootState = ReturnType<typeof storeRTK.getState>;
-//export type AppDispatch = typeof storeRTK.dispatch;
+export type AppDispatch = typeof storeRTK.dispatch;
