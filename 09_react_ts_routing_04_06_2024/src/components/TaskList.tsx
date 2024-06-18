@@ -71,7 +71,6 @@ const TaskList = () => {
 
     return (
         <>
-
             <h1 className='text-center'>Todo List App</h1>
             <div style={{ margin: '0 auto' }} className='w-50 d-flex'>
                 <input
